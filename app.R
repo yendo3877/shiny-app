@@ -4,6 +4,7 @@ library(ggplot2)
 library(dplyr)
 library(multcompView)
 library(readr)
+library(rlang)  # For !!sym()
 
 # Load the data
 d <- read_csv("https://raw.githubusercontent.com/yendo3877/shiny-app/refs/heads/main/2228_hypo3_ino80.csv")
@@ -59,13 +60,13 @@ server <- function(input, output) {
     }
     
     # Calculate group means
-    summary_df <- d %>%
-      group_by(Group) %>%
-      summarise(Mean = mean(.data[[input$yvar]], na.rm = TRUE)) %>%
+    summary_df <- d |>
+      group_by(Group) |>
+      summarise(Mean = mean(!!sym(input$yvar), na.rm = TRUE)) |>
       left_join(letter_df, by = "Group")
     
     # Create plot
-    ggplot(d, aes(x = Group, y = .data[[input$yvar]])) +
+    ggplot(d, aes(x = Group, y = !!sym(input$yvar))) +
       geom_boxplot() +
       geom_jitter(width = 0.2, alpha = 0.5) +
       geom_text(data = summary_df, aes(x = Group, y = Mean + 0.2, label = Letter),
