@@ -6,13 +6,13 @@ library(multcompView)
 library(readr)
 
 # Load the data
-d <- read_csv("2228_hypo3_ino80.csv")
+d <- read_csv("https://raw.githubusercontent.com/yendo3877/shiny-app/refs/heads/main/2228_hypo3_ino80.csv")
 d$Genotype <- as.factor(d$Genotype)
 d$Temp <- as.factor(d$Temp)
 
 # Define UI
 ui <- fluidPage(
-  titlePanel("ANOVA with Tukey HSD Letters"),
+  titlePanel("Bar plot with ANOVA and Tukey HSD Letters"),
   sidebarLayout(
     sidebarPanel(
       selectInput("yvar", "Choose variable for ANOVA:",
